@@ -1,0 +1,9 @@
+---
+title: "gitHub"
+author: "b"
+date: "Tuesday, March 10, 2015"
+output: html_document
+---
+
+**https://help.github.com/articles/caching-your-github-password-in-git/**
+Run this and gitHub will remember you username and passwords: git config --global credential.helper wincred
