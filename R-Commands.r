@@ -78,13 +78,15 @@ save(DSS,NLA,file='C:/Bryan/EPA/Data/RData/DSS_20120309.rda')
   b<-data.frame(x=rnorm(10),y=rnorm(10))
   assign(a,b)
   NewObject
+
+#use 'get' to call an object from a string (see above)
+get(a)
   
 ##memory management
 memory.size()   #memory use
 gc() #garbage collection: cleans up temp files
   
-#use 'get' to call an object from a string (see above)
-  get(a)
+
   
 #####################
 require(RColorBrewer)
