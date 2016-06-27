@@ -1,6 +1,8 @@
 
 #cheat sheet: http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 
+#http://cran.rstudio.com/web/packages/dplyr/vignettes/
+
 #http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html
 
 library(dplyr)
@@ -71,5 +73,10 @@ library(nycflights13)
                      delay = mean(arr_delay, na.rm = TRUE))
   delay <- filter(delay, count > 20, dist < 2000)
 
+##### joins
+inner_join (similar to merge with all.x=F and all.y=F)
+left_join (similar to merge with all.x=T and all.y=F)
+semi_join (not really an equivalent in merge() unless y only includes join fields)
+anti_join (no equivalent in merge(), this is all x without a match in y)
 
 

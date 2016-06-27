@@ -14,3 +14,26 @@ Run this and gitHub will remember you username and passwords: git config --globa
   - git commit -a -m "a message describing what you did"
 * push all changes to the Github account
   - git push origin master
+  
+###change to a different branch
+  git checkout "branch"  e.g.,  git checkout gh-pages
+  
+  
+  
+## github upstream merge (sync a forked repository)
+* make sure you are in the working directory
+* open the shell
+* the first time you do this you will need to setup the upstream branch (note: change USEPA to the user and LakeTrophicModelling to the repo)
+  - get remote -v
+  - git remote add upstream https://github.com/USEPA/LakeTrophicModelling
+* once you are setup use the following commands to sync the original to upstream then the upstream to the fork master.
+  - git checkout master (just in case)
+  - git pull (just in case)
+  - git remote -v
+ 
+ 
+  - git fetch upstream 
+  - git merge upstream/master
+  - git push origin master
+  
+  
