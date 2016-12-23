@@ -1,0 +1,41 @@
+---
+title: "STA220fall2016Grades"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gdata)
+library(dplyr)
+```
+
+* read in the data (df=='grades')
+* analyze grades
+    - remove observations with missing values for the final (exams for 3 students still being checked and 1 did not take the exam)
+    - four students have a penalty of 6.75 points on project for fabricating data.  For the analysis add 6.75 points to project grade and final grade.
+* convert all score to percents
+
+```{r data, include=FALSE}
+file<-'C:/Users/WMilstea/Downloads/STA220_finalGrades.xlsx'
+require(gdata)
+grades <- read.xls (file, sheet = 'gradeBook', header = TRUE)
+
+#remove penalty for analysis
+grades$project[grades$projectPoints==6.8]<-13.5
+grades$totalPoints[grades$projectPoints==6.8]<-grades$totalPoints[grades$projectPoints==6.8]+6.75
+
+#remove lines for final==NA
+grades<-grades[!is.na(grades$exam2),]
+
+grades$project<-grades$project*5
+grades$exam2<-100*grades$exam2/150
+
+names(grades)[5]<-'HW'
+```
+
+```{r analysis, echo=FALSE}
+summary(grades[,4:9])
+boxplot(grades[,4:9])
+
+
+```
