@@ -1,0 +1,85 @@
+---
+title: "heartRateNormalModel"
+author: "Bryan Milstead"
+date: "December 1, 2016"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r means, include=FALSE, echo=FALSE, cache=FALSE} 
+meanA<-rnorm(1,58.8,1)
+meanC<-rnorm(1,74.47,1)
+sdA<-rnorm(1,4.38,.25)
+sdC<-rnorm(1,9.24,.25)
+```
+
+## Background
+
+Researchers at Pusan National University in Korea compared the cardiovascular fitness of marathon runners to a control group of non-athletes. Athletes and control group members had similar ages and weights. They found a dramatic difference in the resting heart rates (measured in beats per minute [bpm]) of the athletes compared to the control group.  Marathon athletes (N=406) had a mean resting heart rate of `r round(meanA,2)`bpm with a standard deviation of `r round(sdA,2)`bpm.  The control group (N=394) had a mean resting heart rate of `r round(meanC,2)`bpm with a standard deviation of `r round(sdC,2)`bpm.
+
+```{r data, include=FALSE, echo=FALSE, cache=FALSE} 
+athletes<-(rnorm(406,58.8,4.38))
+control<-(rnorm(394,74.47,9.24))
+```
+
+
+```{r calcs, echo=FALSE}
+Xlim<-c(30,110)
+Ylim<-c(0,140)
+Breaks<-seq(Xlim[1],Xlim[2],4)
+par(mfrow=c(1,2))
+hist(athletes,xlim=Xlim,ylim=Ylim,breaks=Breaks)
+hist(control,xlim=Xlim,ylim=Ylim,breaks=Breaks)
+
+#function to calculate the z scores
+zScore<-function(bpm,Group) {
+  Gr<-get()
+} (bpm-mean(Group))/sd(Group)
+
+#data to calculate zScore for 1 athlete and 1 control
+mBPM<-round(meanA-rnorm(1,2.5,.2)*sdA)
+cBPM<-round(meanC-rnorm(1,1.5,.2)*sdC
+            
+            
+            a<-function(athletes)
+            
+a<-get('athletes')
+            
+zM<-zScore(zA, athletes)
+
+a<-function(Group) {
+  Gr<-get(Group)
+  return(mean(GR))
+}
+
+a("athletes")
+
+a<-c(1,2,3)
+
+b<-function('a') return(get('a'))
+b()
+        
+```
+
+## Questions
+
+- Is it appropriate to use the normal model to compare these two distributions? Yes / No
+- Explain your answer.
+- A nurse practitioner examines two subjects from the above study.  The first, a marathon runner, has resting heart rate of `r mBPM`. The second is from the control group and has a resting heart rate of `r cBPM)`.
+    - Calculate the Z scores for both subjects:  Marathoner Z=            Control Z=   
+    - Which one shows the most extreme difference in heart rate compared to other members of their group (athletes vs. control)?
+    - Explain what the Z score for the marathon runner means.
+- A subjects chosen at random has a resting heart rate of `r round(meanA+(1.3*sdA))`bpm.  
+    - Is this person more likely to be a marathon runner or a member of the control group (marathon / control)?
+    - Explain your reasoning.
+- Using the 68-95-99.7 rule what is the range of resting heart rate values you would expect for the central 68% of the control group.  Lower range=      ?   Upper range=       ?
+- What percent of the control group will have a heart rate between `r round(meanC-(.4*sdC))`bpm and `r round(meanC+(.6*sdC))`bpm
+
+- What percent of the marathon group will have a heart rate between `r round(meanA-(.6*sdA))`bpm and `r round(meanA+(.4*sdA))`bpm
+
+
+

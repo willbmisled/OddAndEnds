@@ -1,0 +1,43 @@
+---
+title: "RMD"
+author: "Bryan Milstead"
+date: "July 29, 2016"
+output: html_document
+---
+
+* no options works
+```{r test} 
+print('test')
+```
+
+* {r test1, include=FALSE, echo=FALSE, cache=FALSE, eval=FALSE} nothing happens of course
+
+```{r test1, include=FALSE, echo=FALSE, cache=FALSE, eval=FALSE} 
+print('test1')
+```
+
+* {r test2, include=FALSE}:no code or output
+
+```{r test2, include=FALSE} 
+print('test2')
+```
+
+* {r test3, include=TRUE}:code & output; default
+
+```{r test3, include=TRUE} 
+print('test3')
+```
+
+* {r test4, echo=FALSE}:output only
+
+```{r test4, echo=FALSE} 
+print('test4')
+```
+
+* {r test5, echo=FALSE, include=TRUE}:output only
+
+```{r test5, echo=FALSE, include=TRUE} 
+print('test5')
+```
+
+* How do you get the rcode but not the output?
