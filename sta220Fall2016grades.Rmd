@@ -1,5 +1,7 @@
 ---
-title: "STA220fall2016Grades"
+title: "Grades: STA220 Sec 0002 fall 2016"
+author:	Bryan Milstead
+date:	"23 Dec 2016"
 output: pdf_document
 ---
 
@@ -10,10 +12,8 @@ library(dplyr)
 ```
 
 * read in the data (df=='grades')
-* convert all score to percents
-* calc summary stats
-* make boxplots of all grades
-* The histogram of total points 
+* convert all scores to percents
+
 
 ```{r data, include=FALSE}
 file<-'C:/Users/WMilstea/Downloads/STA220_finalGrades.xlsx'
@@ -25,12 +25,91 @@ grades$project<-grades$project*5
 grades$exam2<-100*grades$exam2/150
 
 names(grades)[5]<-'HW'
+
+#keep a copy of the grades
+grades_raw<-grades
 ```
 
-```{r analysis, echo=FALSE}
+* calc summary stats
+
+```{r analysis1, echo=FALSE}
 summary(grades[,4:9])
+```
+
+* boxplots of all grades
+
+```{r analysis2, fig.width=7, fig.height=4,echo=FALSE}
 boxplot(grades[,4:9])
+```
+
+* histogram of total points 
+
+```{r analysis3, fig.width=7, fig.height=4,echo=FALSE}
 hist(grades$totalPoints,breaks=seq(20,100,by=5))
+```
+
+```{r letterGrade, include=FALSE}
+#shift totalPoints up by:
+bonusPoints<-3
+
+grades$totalPoints<-round(grades_raw$totalPoints+bonusPoints)
+
+sum(grades_raw$totalPoints)
+sum(grades$totalPoints)-9064.3
+
+
+grades$letterGrade<-NA
+
+grades<-mutate(grades,letterGrade=ifelse(totalPoints<60,'F',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=60,'D',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=65,'D+',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=70,'C-',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=73,'C',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=77,'C+',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=80,'B-',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=83,'B',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=87,'B+',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=90,'A-',letterGrade))
+grades<-mutate(grades,letterGrade=ifelse(totalPoints>=93,'A',letterGrade))
+
+grades$letterGrade<-factor(grades$letterGrade, levels=c('A','A-','B+','B','B-','C+','C','C-','D+','D','F'))
 
 
 ```
+
+* **If we shift totalPoints up by `r bonusPoints` points to account for the harsh grading on the project this brings the max grade up to `r max(grades$totalPoints)`%**
+* totalPoints rounded to the next highest integer and converted to letter grades with the following scale:
+
+totalPoints  | letterGrade
+------------- | -------------
+A  | 94-100
+A- | 90-93
+B+ | 87-89
+B | 83-86
+B- | 80-82
+C+ | 77-79
+C | 73-76
+C- | 70-72
+D+ | 65-69
+D | 60-64
+F | Below 60 
+
+* table of letter grades
+
+```{r letters, echo=FALSE}
+table(grades$letterGrade,useNA='ifany')
+```
+
+* bar plot of letter grades
+
+```{r letters1, echo=FALSE}
+
+barplot(table(grades$letterGrade))
+```
+
+* print letterGrades by totalPoints
+
+```{r finalGrades, echo=FALSE}
+select(arrange(grades,desc(totalPoints)),totalPoints,letterGrade)
+```
+
