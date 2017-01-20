@@ -17,6 +17,7 @@ library(nycflights13)
 
 #Filter rows with filter()
   filter(flights,month==1,day==1)
+  filter(flights,month!=1,day==1)
   filter(flights,month==1|month==2)
 
 #To select rows by position, use slice():
