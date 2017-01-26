@@ -1,0 +1,19 @@
+---
+title: "kali"
+author: "Bryan"
+date: "January 26, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## commands
+
+* http://kali.epa.gov:8787/   URL to connect to rstudio on kali from web browser
+* use gitBash to shell into kali
+    - ssh bmilstea@kali.epa.gov   connect to kali
+    - ls  show files
+    - cd /data     switch to the data directory
+

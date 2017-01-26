@@ -1,0 +1,17 @@
+---
+title: "sqlite"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## http://www.tutorialspoint.com/sqlite/
+
+#commands
+
+* C:/Users/WMilstea/sqlite/sqlite-tools-win32-x86-3160200/sqlite3.exe
+* .help <-list of commands
+* -- <- comment
+* /*   */  <-comment block

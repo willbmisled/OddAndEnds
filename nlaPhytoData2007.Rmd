@@ -80,4 +80,32 @@ delOTU
 * rename All to allPhytoLong
 * save allPhytoLong, allPnytoWide, and cyanoWide as output/phytoDataNLA2007.rda
 
+##vegan
+* compare dissimilarity indices
 
+```{r vegan, echo=FALSE}
+#create community matrix
+  c1<-cyanoWide[,-1]
+  row.names(c1)<-cyanoWide[,1]
+  
+  p1<-allPhytoWide[,-1]
+  row.names(p1)<-allPhytoWide[,1]
+
+t1=metaMDS(p1, k=3,tryMax=20) 
+plot(t1)
+ordiplot(t1,type="p",choices=c(1,3))
+orditorp(t1,display="species",col="red",air=0.01)
+orditorp(t1,display="sites",cex=1.25,air=0.01)
+
+par(mfrow=c(2,2))
+ordiplot(t1,type="p",choices=c(1,2))
+ordiplot(t1,type="p",choices=c(1,3))
+ordiplot(t1,type="p",choices=c(2,3))
+
+t1
+str(t1)
+
+summary(t1$points)
+
+ 
+```
