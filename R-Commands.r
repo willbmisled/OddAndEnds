@@ -42,6 +42,12 @@ tryWarn<-function(x){    #simple tryCatch function returns NA for errors and War
     tryWarn(-1) #returns NA and warning
     tryWarn(0) #returns value as -Inf but no warning
     tryWarn('a') #returns NA for the error
+    
+    
+#the following read.csv command depends on the directory.  When working from the command line the need to use the working directory
+#when using knitR it depends on the directory where the .rmd file is found.
+#the following code can be used to look in two different directories for the same file.
+datasets<-tryCatch(read.csv('../data/NLA2012_data_sources.csv',sep=','),warning = function(e) read.csv('data/NLA2012_data_sources.csv',sep=','))
 ################end tryCatch
 
 options(scipen=5) #tell r not to use scientific notation on axis labels
@@ -142,6 +148,7 @@ temp<- read.csv("c:/temp/temp.csv")
 MRB1<- read.csv("M:/Net MyDocuments/EPA/Data/Sparrow/MRB1Sparrow/NLA_MRB1 NP predictions.csv")
 write.table(out, file='//AA.AD.EPA.GOV/ORD/NAR/USERS/EC2/wmilstea/Net MyDocuments/EPA/Data/Sparrow/MRB1Sparrow/MRB1_NPEstimates.csv',row.names=F,sep=',')
 
+a<-read.csv(paste(kali,m$filename[i],sep=''),sep=',',na.strings = c(""," "))  #to change the NA string(s)
 
 sessionInfo() #information on version and packages installed
 
