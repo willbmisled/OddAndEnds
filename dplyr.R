@@ -81,3 +81,18 @@ semi_join (not really an equivalent in merge() unless y only includes join field
 anti_join (no equivalent in merge(), this is all x without a match in y)
 
 
+###############
+#replace a value the base way
+a<-data.frame(x=c(1:5,NA),y=c(6:1))
+a
+a$y[a$x==3]<-23
+a
+
+#replace a value the dplyr way
+library(dplyr)
+a<-data.frame(x=c(1:5,NA),y=c(6:1))
+a
+a<-mutate(a,y=ifelse(y==3,23,y))
+a
+
+

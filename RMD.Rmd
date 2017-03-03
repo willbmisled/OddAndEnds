@@ -1,9 +1,11 @@
 ---
 title: "RMD"
 author: "Bryan Milstead"
-date: "July 29, 2016"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
+
+* add current date to yaml header (see above): "`r format(Sys.time(), '%d %B %Y')`"
 
 relative paths
 
