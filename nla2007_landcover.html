@@ -127,7 +127,7 @@ $(document).ready(function () {
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <ul>
-<li>This document describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.</li>
+<li>This document (<a href="https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_landcover.Rmd">nla2007_landcover.rmd</a>) describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.</li>
 <li>Landuse/Landcover data were extracted from the 2006 NLCD with the rscript <a href="https://github.com/willbmisled/cyanoLakes/blob/master/bryan/calcNLCD_ByLakeBuffer.R">calcNLCD_ByLakeBuffer.R</a></li>
 <li>For each lake the area (Km2) and percent of each Land Use/Land Cover classes in four buffers were estimated. The buffer sizes were:
 <ul>
@@ -247,14 +247,14 @@ $(document).ready(function () {
 </tbody>
 </table>
 <ul>
-<li>Variable names are a combination of the “Label” in the table above, Per(percent of buffer represented), Km2 (area in Km2 of buffer represented) and the buffer width.</li>
+<li>Variable names are a combination of the “Label” in the table above, “Per”(percent of buffer represented), “Km2” (area in Km2 of buffer represented) and the buffer width.</li>
 <li>Also included are the variables
 <ul>
 <li>NLA_ID: the unique NLA identifier for the lake</li>
 <li>COMID: the NHDplus comid for the lake</li>
 <li>MaxDist: the maximum open water distance in the lake (m).</li>
 </ul></li>
-<li>data are saved in csv format.</li>
+<li>data were saved in csv format and can be downloaded from github: <a href="https://github.com/willbmisled/OddAndEnds/blob/master/nla_2007_landcover.csv">nla_2007_landcover.csv</a></li>
 </ul>
 </div>
 

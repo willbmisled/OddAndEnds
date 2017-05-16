@@ -11,19 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 options(stringsAsFactors = FALSE) 
 library(knitr)
 library(tidyverse)
-library(readxl)
 
-read1<-function(dir='data/raw_data/',file='nla2012_waterchem_wide.csv'){
-  a<-tryCatch(read.csv(paste(dir,file,sep=''),sep=',',na.strings = c(""," ","NA","N/A")),warning = function(e) read.csv(paste('../',dir,file,sep=''),sep=',',na.strings = c(""," ","NA","N/A")))
-  return(a)
-}  
-
-names1<-function(df) names(df)[order(names(df))]
 ```
 
 ## Introduction
 
-* This document describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.
+* This document ([nla2007_landcover.rmd](https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_landcover.Rmd)) describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.
 * Landuse/Landcover data were extracted from the 2006 NLCD with the rscript [calcNLCD_ByLakeBuffer.R](https://github.com/willbmisled/cyanoLakes/blob/master/bryan/calcNLCD_ByLakeBuffer.R)
 * For each lake the area (Km2) and percent of each Land Use/Land Cover classes in four buffers were estimated.  The buffer sizes were:
     - 300m
@@ -56,12 +49,12 @@ names1<-function(df) names(df)[order(names(df))]
 95|HerbWet|Emergent Herbaceous Wetlands - Areas where perennial herbaceous vegetation accounts for greater than 80 percent of vegetative cover and the soil or substrate is periodically saturated with or covered with water.
 NA|OutsideBuf|These are pixels from the cropped grid that are outside the mask (buffer) area.  Ignore.
 
-* Variable names are a combination of the "Label" in the table above, Per(percent of buffer represented), Km2 (area in Km2 of buffer represented) and the buffer width.
+* Variable names are a combination of the "Label" in the table above, "Per"(percent of buffer represented), "Km2" (area in Km2 of buffer represented) and the buffer width.
 * Also included are the variables
     - NLA_ID: the unique NLA identifier for the lake
     - COMID: the NHDplus comid for the lake
     - MaxDist: the maximum open water distance in the lake (m).
-* data are saved in csv format.
+* data were saved in csv format and can be downloaded from github: [nla_2007_landcover.csv](https://github.com/willbmisled/OddAndEnds/blob/master/nla_2007_landcover.csv)
 
 ```{r getLULCdata, include=FALSE}
 #load the data directly from github
@@ -71,7 +64,6 @@ names(ltmData)
 #limit to the LULC and ancillary data
 lulc<-ltmData[,1:147]
 
-#can also retrieve the data definitions
-data_def[147,]
+write.csv(lulc,'nla_2007_landcover.csv')
 
 ```
