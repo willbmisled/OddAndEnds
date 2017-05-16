@@ -1,6 +1,8 @@
 
 rm(list=ls(all=T)) #clear workspace
 
+paste("insult of the day:",bismer::insult())
+
 #use 'locator()' to find x y coordinates on a graphic window
 locator() #left click on location(s) on plot then right click 'stop' to display results
 
@@ -234,6 +236,7 @@ plot(nc, col=cols[findInterval(rrt, brks, all.inside=TRUE)], axes = TRUE)
 a<-c(1:10)
 b<-c(3,7)
 a%in%b
+!a%in%b  #note to get the opposite use the "!" 
 b%in%a
 match(b,a)
 b%in%a & b>5
