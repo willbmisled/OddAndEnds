@@ -1,6 +1,6 @@
 ---
 title: "gitHub"
-author: "b"
+author: "Bryan Milstead"
 date: "Tuesday, March 10, 2015"
 output: html_document
 ---

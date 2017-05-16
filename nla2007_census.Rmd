@@ -2,7 +2,7 @@
 title: "nla2007_census"
 author: "Bryan Milstead"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -17,7 +17,7 @@ library(RODBC)  #NOTE you must use 32 bit R for this to work
 
 ## Introduction
 
-* This document ([nla2007_census.rmd](https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_census.Rmd)) describes the process of extracting the 2000 census data for the 2007 National Lake Assessment Sites.
+* This document ([nla2007_census.pdf](https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_census.pdf)) describes the process of extracting the 2000 census data for the 2007 National Lake Assessment Sites.
 * The data were extracted from the 2000 census with the rscript [PopulationLakes_20130212.r](https://github.com/willbmisled/mapping/blob/master/R/PopulationLakes_20130212.r)
 * For each lake the number of people and population density were calculated for four buffers.  The buffer sizes were:
     - 300m

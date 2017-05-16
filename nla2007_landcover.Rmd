@@ -2,7 +2,7 @@
 title: "nla2007_landcover"
 author: "Bryan Milstead"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ library(tidyverse)
 
 ## Introduction
 
-* This document ([nla2007_landcover.rmd](https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_landcover.Rmd)) describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.
+* This document ([nla2007_landcover.pdf](https://github.com/willbmisled/OddAndEnds/blob/master/nla2007_landcover.pdf)) describes the process of extracting the landuse/landcover (LULC) data for the 2007 National Lake Assessment Sites.
 * Landuse/Landcover data were extracted from the 2006 NLCD with the rscript [calcNLCD_ByLakeBuffer.R](https://github.com/willbmisled/cyanoLakes/blob/master/bryan/calcNLCD_ByLakeBuffer.R)
 * For each lake the area (Km2) and percent of each Land Use/Land Cover classes in four buffers were estimated.  The buffer sizes were:
     - 300m
@@ -29,7 +29,7 @@ library(tidyverse)
 * The table below shows the LULC codes and definitions.
 
 **Code**  |**Label**  | **Definition**
-------------- | ------------- | ------------- 
+------------- | ------------- | ------------------------------------------------------------------------------------ 
 0|Zero|Not sure what this means yet.  Not in the metadata.  Probably means missing value.
 11|Water|Open Water - All areas of open water, generally with less than 25% cover or vegetation or soil
 12|IceSnow|Perennial Ice/Snow - All areas characterized by a perennial cover of ice and/or snow, generally greater than 25% of total cover.
