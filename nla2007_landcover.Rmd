@@ -64,6 +64,6 @@ names(ltmData)
 #limit to the LULC and ancillary data
 lulc<-ltmData[,1:147]
 
-write.csv(lulc,'nla_2007_landcover.csv')
+write.csv(lulc,'nla_2007_landcover.csv',row.names=FALSE)
 
 ```
