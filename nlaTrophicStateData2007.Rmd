@@ -311,4 +311,10 @@ plotDif(tsi$tsi_n,tsi$ts_n,'Trophic State Nitrogen')
 * My personal feeling is that any of the indices can be used to estimate trophic state but without some independent means to the "true" trophic state we can't really decide which is best.
 * Based on this limited anlysis I think we are justified in using the Trophic State Index for Nitrogen to look at changes in lake trophic structure that will result for changes in atmospheric deposition of nitrogen.
 
+## References
 
+* Carlson, R. E. 1977. A Trophic State Index for Lakes. Limnology and Oceanography 22(2): 361-369.
+
+* Conley, D. J., et al. 2009. Controlling Eutrophication: Nitrogen and Phosphorus. Science 323(5917): 1014-1015.
+
+* Kratzer, C.R. & P.L. Brezonik. 1981. A Carlson-type trophic state index for nitrogen in Florida lakes. Water. Res. Bull. 17: 713-715.
