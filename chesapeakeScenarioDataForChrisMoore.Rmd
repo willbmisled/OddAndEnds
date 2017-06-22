@@ -1,0 +1,85 @@
+---
+title: "chesapeakeScenarioDataForChrisMoore"
+author: "Bryan Milstead"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+* In 2014 I worked with the Chesapeake Bay group to use the MRB1 SPARROW model to estimate changes in Nitrogen (TN) and Phosphorus (TP) that would result from various modeling scenarios they were working on.
+* They provided expected TN & TP changes expected in various sectors of the watershed.
+* I mapped the expected changes to NHDplus V.1 flowlines and used the USGS SPARROW decision support system to estimate expected changes to the flowlines and how these would aggregate to lakes in the watershed.
+* The expected lake loads were then changed to concentrations and the changes in Chlorophyll a were estimated using Vollenweider equations derived from the 2007 NLA.
+* Results were summarized and sent to Chris Moore in 2014.
+* The work included the following files:
+    - ChesapeakeLoadData20140203.r:	Rscript used to create the ChesLakeLoad and ChesLakeConc data files; also has the data definitions
+    - ChesapeakeLoadData20140203.rda	Rdataset that includes the lake specific ChesLakeLoad and ChesLakeConc data
+    - ChesapeakeAnalysis20140204.r	Rscript used to aggregate lake data and produce plots.
+* 20170613: Chris Moore requested the original data by lake and I sent him 
+* 20170620: I sent Chris Moore the lake specific datasets and data definitions for:
+    - ChesLakeLoad: TN, TP loads for each scenario by lake
+    - ChesLakeConc: TN, TP, & Chla concentrations for each scenario by lake
+    - MRB1_WBIDLakes.shp: a shapefile showing the locations of each lake and the WBID (unique identifier) to link to the data.
+* 20170622: Chris followed up with a request for the trophic state categories for each lake or instructions on how to produce them from the data.
+* This is easily reproduced from "ChesapeakeAnalysis20140204.r" so I'll go ahead and calculate these for him.
+* Below are the NLA2007 thresholds I originally used to calculate trophic state (Note: "(" = ">" & "]" = "<="): 
+
+Trophic State | TP mg/l |	TN mg/l |	CHLA mg/l
+--------------- | ------------- | ------------- | ------------- 
+OLIGOTROPHIC | (-Inf, .01]	| (-Inf, .35] |	(-Inf, .002]
+MESOTROPHIC |	(.01, .025] |	(.35, .75] | (.002, .007]
+EUTROPHIC |	(.025, .05] |	(.75, 1.4] |	(.007, .03]
+HYPEREUTROPHIC |	(.05, Inf] | (1.4, Inf] |	(.03, Inf]
+
+## Data Steps
+* Load ChesapeakeLoadData20140203.rda
+* Assign trophic states based on estimated TN, TP, and Chla for each scenario using the thresholds above
+* Output the data
+* Package with the data definitions, thresholds table, and a link to this document and add to 'ChesLakeLoadsConcTrophicState.xlsx'
+
+```{r data, include=FALSE, echo=FALSE, cache=FALSE} 
+load('d:/EPA/Data/Chesapeake/DSS/ChesapeakeLoadData20140203.rda')
+
+###predicted trophic state
+Labels<-c('Oligo','Meso','Eu','Hyper')
+
+Breaks<-c(0,.350,.750,1.400,100)
+Nvv1985ts<-cut(ChesLakeConc$Nvv1985,Breaks,Labels,include.lowest=T,ordered_result=T) 
+NvvOrigts<-cut(ChesLakeConc$NvvOrig,Breaks,Labels,include.lowest=T,ordered_result=T)
+Nvv2010ts<-cut(ChesLakeConc$Nvv2010,Breaks,Labels,include.lowest=T,ordered_result=T)
+NvvNoActts<-cut(ChesLakeConc$NvvNoAct,Breaks,Labels,include.lowest=T,ordered_result=T)
+NvvTMDLoldts<-cut(ChesLakeConc$NvvTMDLold,Breaks,Labels,include.lowest=T,ordered_result=T)
+NvvTMDLnewts<-cut(ChesLakeConc$NvvTMDLnew,Breaks,Labels,include.lowest=T,ordered_result=T)
+NvvNoPolicyts<-cut(ChesLakeConc$NvvNoPolicy,Breaks,Labels,include.lowest=T,ordered_result=T)
+
+Breaks<-c(0,.010,.025,.050,10)   #<=10; >10 & <=25; >25 & <=50; >50
+Pvv1985ts<-cut(ChesLakeConc$Pvv1985,Breaks,Labels,include.lowest=T,ordered_result=T)
+PvvOrigts<-cut(ChesLakeConc$PvvOrig,Breaks,Labels,include.lowest=T,ordered_result=T)
+Pvv2010ts<-cut(ChesLakeConc$Pvv2010,Breaks,Labels,include.lowest=T,ordered_result=T)
+PvvNoActts<-cut(ChesLakeConc$PvvNoAct,Breaks,Labels,include.lowest=T,ordered_result=T)
+PvvTMDLoldts<-cut(ChesLakeConc$PvvTMDLold,Breaks,Labels,include.lowest=T,ordered_result=T)
+PvvTMDLnewts<-cut(ChesLakeConc$PvvTMDLnew,Breaks,Labels,include.lowest=T,ordered_result=T)
+PvvNoPolicyts<-cut(ChesLakeConc$PvvNoPolicy,Breaks,Labels,include.lowest=T,ordered_result=T)
+
+Breaks<-c(0,.002,.007,.03,10)
+Chla1985ts<-cut(ChesLakeConc$Chla1985,Breaks,Labels,include.lowest=T,ordered_result=T)  
+ChlaOrigts<-cut(ChesLakeConc$ChlaOrig,Breaks,Labels,include.lowest=T,ordered_result=T)
+Chla2010ts<-cut(ChesLakeConc$Chla2010,Breaks,Labels,include.lowest=T,ordered_result=T)
+ChlaNoActts<-cut(ChesLakeConc$ChlaNoAct,Breaks,Labels,include.lowest=T,ordered_result=T)
+ChlaTMDLoldts<-cut(ChesLakeConc$ChlaTMDLold,Breaks,Labels,include.lowest=T,ordered_result=T)
+ChlaTMDLnewts<-cut(ChesLakeConc$ChlaTMDLnew,Breaks,Labels,include.lowest=T,ordered_result=T)
+ChlaNoPolicyts<-cut(ChesLakeConc$ChlaNoPolicy,Breaks,Labels,include.lowest=T,ordered_result=T)
+
+TS<-data.frame(WB_ID=ChesLakeConc$WB_ID,Nvv1985ts,NvvOrigts,Nvv2010ts,NvvNoActts,NvvTMDLoldts,NvvTMDLnewts,NvvNoPolicyts,
+          Pvv1985ts,PvvOrigts,Pvv2010ts,PvvNoActts,PvvTMDLoldts,PvvTMDLnewts,PvvNoPolicyts,
+          Chla1985ts,ChlaOrigts,Chla2010ts,ChlaNoActts,ChlaTMDLoldts,ChlaTMDLnewts,ChlaNoPolicyts)
+
+write.csv(TS,'C:/bryan/bryan_temp/chesapeake/ts.csv',row.names=FALSE)
+```
+
+
