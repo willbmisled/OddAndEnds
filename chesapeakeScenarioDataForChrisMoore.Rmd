@@ -40,7 +40,7 @@ HYPEREUTROPHIC |	(.05, Inf] | (1.4, Inf] |	(.03, Inf]
 * Load ChesapeakeLoadData20140203.rda
 * Assign trophic states based on estimated TN, TP, and Chla for each scenario using the thresholds above
 * Output the data
-* Package with the data definitions, thresholds table, and a link to this [document](https://github.com/willbmisled/OddAndEnds/blob/master/chesapeakeScenarioDataForChrisMoore.rmd) and add to 'ChesLakeLoadsConcTrophicState.xlsx'
+* Package with the data definitions, thresholds table, and a link to this [document](https://github.com/willbmisled/OddAndEnds/blob/master/chesapeakeScenarioDataForChrisMoore.Rmd) and add to 'ChesLakeLoadsConcTrophicState.xlsx'
 
 ```{r data, include=FALSE, echo=FALSE, cache=FALSE} 
 load('d:/EPA/Data/Chesapeake/DSS/ChesapeakeLoadData20140203.rda')
