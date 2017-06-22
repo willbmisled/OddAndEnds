@@ -147,7 +147,7 @@ $(document).ready(function () {
 </ul></li>
 <li>20170622: Chris followed up with a request for the trophic state categories for each lake or instructions on how to produce them from the data.</li>
 <li>This is easily reproduced from “ChesapeakeAnalysis20140204.r” so I’ll go ahead and calculate these for him.</li>
-<li>Below are the NLA2007 thresholds I originally used to calculate trophic state:</li>
+<li>Below are the NLA2007 thresholds I originally used to calculate trophic state (Note: “(” = “&gt;” &amp; “]” = “&lt;=”):</li>
 </ul>
 <table>
 <thead>
@@ -185,6 +185,15 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
+</div>
+<div id="data-steps" class="section level2">
+<h2>Data Steps</h2>
+<ul>
+<li>Load ChesapeakeLoadData20140203.rda</li>
+<li>Assign trophic states based on estimated TN, TP, and Chla for each scenario using the thresholds above</li>
+<li>Output the data</li>
+<li>Package with the data definitions, thresholds table, and a link to this <a href="https://github.com/willbmisled/OddAndEnds/blob/master/chesapeakeScenarioDataForChrisMoore.rmd">document</a> and add to ‘ChesLakeLoadsConcTrophicState.xlsx’</li>
+</ul>
 </div>
 
 
