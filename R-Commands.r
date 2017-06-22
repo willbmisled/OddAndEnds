@@ -173,18 +173,18 @@ stderr <- function(x) sqrt(var(x)/length(x)) #standard error function
 
 
 
+#replace NA with zeros
+x<-data.frame(a=1:5,b=c(11,22,NA,NA,55),c=c(-1,-2,-3,NA,NA),d=letters[1:5],e=c(NA,NA,'cc',NA,NA))
+
 #replace all the NA's in dataframe x with zeroes.
 
 x[is.na(x)] <- 0 
 
-#to replace values in columns a and b
+#to replace values in columns b and e only
+x[c("b","e")][is.na(x[c("b","e")])] <- 0  
 
-x$a[is.na(x$a)] <- 0
-x$c[is.na(x$c)] <- 0
-#or a group of columns
-xsub<-x[,1:2]
-xsub[is.na(xsub)]<-0
-x[,1:2]<-xsub
+#can also specify rows and columns
+x[1:3,c("b","e")][is.na(x[1:3,c("b","e")])] <- 0
 
 # Read data from website   
 NLA<-data.frame(read.csv(url("http://willbmisled.com/lakes/nla_test.csv")))

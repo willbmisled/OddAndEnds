@@ -63,6 +63,10 @@ ordiplot(vare.mds0, type = "t")
 vare.mds <- metaMDS(varespec, trace = FALSE)
   vare.mds
   plot(vare.mds, type = "t")
+  
+  
+data(varechem)
+rankindex(scale(varechem), varespec, c("euc","man","bray","jac","kul"))
 
 
 
