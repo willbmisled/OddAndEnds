@@ -3,6 +3,16 @@ rm(list=ls(all=T)) #clear workspace
 
 paste("insult of the day:",bismer::insult())
 
+
+#use the command "here" to replace filepath.  Will search all for the right director below the root. Great for RMD files that are not in the root directory.
+library(here)
+temp<-c(1:10)
+save(temp,file=here('data/temp.rda'))
+load(here("data/temp.rda"))
+
+#convert all char columns in a df to factors
+DF[sapply(DF, is.character)]<-lapply(DF[sapply(DF, is.character)],as.factor)
+
 #use 'locator()' to find x y coordinates on a graphic window
 locator() #left click on location(s) on plot then right click 'stop' to display results
 
