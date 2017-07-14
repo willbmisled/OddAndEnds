@@ -40,4 +40,14 @@ Run this and gitHub will remember you username and passwords: git config --globa
   - git merge upstream/master
   - git push origin master
   
-  
+* to restart an restudio session on kali:
+    - open git bash
+    - type: "ssh bmilstea@kali.epa.gov"
+    - respond to password request
+    - type "ps aux | grep rstudio"
+    - This will show the active processes in rstudio.  From this find the rstudio process you want to stop.  The five digit number in the second field is the process id. 
+    - below is a copy of a response:
+      - "bmilstea  99031  0.8  0.8 1210616 556408 ?      Sl   13:25   0:05 /usr/lib/rstudio-server/bin/rsession -u bmilstea --launcher-token 611E93DD"
+    - In this case the process id is "99031"
+    - to kill it type: "kill -9 99031"
+ 

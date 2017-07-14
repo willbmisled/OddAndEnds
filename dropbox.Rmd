@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
     - Once completed, close your browser window and return to R to complete authentication. 
     - The credentials are automatically cached (you can prevent this) for future use.
 
-```{r install, include=FALSE, eval=FALSE}
+```{r install, eval=FALSE}
 devtools::install_github('karthik/rdrop2')
 library(rdrop2)
 drop_auth()
@@ -23,27 +23,33 @@ drop_auth()
 
 * Retrieve Dropbox account information
 
-```{r acct, include=FALSE}
+```{r acct}
 library(dplyr)
 library(rdrop2)
 drop_acc() %>% 
     select(uid, display_name, email_verified, quota_info.quota)
-
 ```
-Dropbox directory listing
 
+* Dropbox directory listing
+
+```{r dir}
 drop_dir()
-# or specify a path
-drop_dir('public/gifs')
-Filter directory listing by filetype (e.g. png files)
 
+# or specify a path
+drop_dir('open_access')
+
+#Filter directory listing by filetype (e.g. png files)
 drop_dir() %>% 
     filter(mime_type == "image/png")
-Create folders on Dropbox
+```
+
+*Create folders on Dropbox
+
+
 
 drop_create('drop_test')
 # or provide the full path where it needs to be created
-drop_create('public/drop_test')
+drop_create('open_access/drop_test')
 Upload a file into Dropbox
 
 csv files
