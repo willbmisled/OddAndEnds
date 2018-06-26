@@ -3,6 +3,23 @@ rm(list=ls(all=T)) #clear workspace
 
 paste("insult of the day:",bismer::insult())
 
+#use vector to preallocate a list
+x <- vector(mode = "list", length = 10)
+
+############download and unpack a zip file
+#Download data
+temp <- tempfile() #create a temp file
+
+#download the data (this is a 1 TB file)
+download.file("http://gisdata.usgs.gov/TDDS/DownloadFile.php?TYPE=nlcd2011&FNAME=nlcd_2011_landcover_2011_edition_2014_10_10.zip",temp)
+
+#unzip the file
+unzip(temp, exdir=here::here('temp'))
+
+#delete the temp file
+unlink(temp)
+############
+
 
 #use the command "here" to replace filepath.  Will search all for the right director below the root. Great for RMD files that are not in the root directory.
 library(here)
@@ -17,6 +34,27 @@ DF[sapply(DF, is.character)]<-lapply(DF[sapply(DF, is.character)],as.factor)
 locator() #left click on location(s) on plot then right click 'stop' to display results
 
 for(i in c(1:length(dev.list())))dev.off()  #close all graphics windows
+
+#use a data.frame object name as a character string
+a<-data.frame(x=1:10,y=1:10)
+deparse(substitute(a))
+
+#use a string to name a data.frame
+a<-'NewObject'
+b<-data.frame(x=rnorm(10),y=rnorm(10))
+assign(a,b)
+NewObject
+
+#use 'get' to call an object from a string (see above)
+get(a)
+
+#Use a string to call an object with get()
+x<-rnorm(100)
+y<-rnorm(100)
+Test<-lm(y~x)
+Model<-'Test'
+a<-get(Model)
+c(Model=Model,round(c(adjR2=summary(a)$adj.r.squared,coefficients(a)),2))
 
 
 a<-rnorm(1);a
@@ -87,18 +125,7 @@ par(oldpar)  #reset graphical parameters to default
 save(DSS,NLA,file='C:/Bryan/EPA/Data/RData/DSS_20120309.rda')
   #load(file='C:/Bryan/EPA/Data/RData/DSS_20120309.rda')
   
-#use a data.frame object name as a character string
-  a<-data.frame(x=1:10,y=1:10)
-  deparse(substitute(a))
-  
-#use a string to name a data.frame
-  a<-'NewObject'
-  b<-data.frame(x=rnorm(10),y=rnorm(10))
-  assign(a,b)
-  NewObject
 
-#use 'get' to call an object from a string (see above)
-get(a)
   
 ##memory management
 memory.size()   #memory use
@@ -138,13 +165,7 @@ con <- odbcConnectAccess("c:/bryan/FJ/Access/FJ.mdb")
 FJ <- sqlSave(con,dat=FJpop,tablename='tblMNKA',append=F,rownames=F)
 close(con)
 
- #Use a string to call an object with get()
-    x<-rnorm(100)
-    y<-rnorm(100)
-      Test<-lm(y~x)
-        Model<-'Test'
-          a<-get(Model)
-    c(Model=Model,round(c(adjR2=summary(a)$adj.r.squared,coefficients(a)),2))
+ 
 
 
 win.graph(10,7.5)
@@ -322,4 +343,11 @@ summary(lm(Formula,data=Test))
 ##############
 
 How to write an R package: http://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+  #to setup the package after the function(s) are written
+  library(roxygen2)
+  library(devtools)
+    document()
+    
+    install('C:/bryan/rscripts/goatscape')
+    library(goatscape)
   

@@ -9,9 +9,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## map the network drive
+
+* Y:  \\a2626xrith009.aa.ad.epa.gov\bmilstea
+* Z:  \\a2626xrith009.aa.ad.epa.gov\data
+
 ## commands
 
 * http://kali.epa.gov:8787/   URL to connect to rstudio on kali from web browser
+* lan username and password
 * use gitBash to shell into kali
     - ssh bmilstea@kali.epa.gov   connect to kali
     - ls  show files

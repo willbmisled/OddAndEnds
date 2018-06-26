@@ -96,3 +96,11 @@ a<-mutate(a,y=ifelse(y==3,23,y))
 a
 
 
+#summarize by group
+x <- data.frame(Category=factor(c("First", "First", "First", "Second",
+                                  "Third", "Third", "Second")), 
+                Frequency=c(10,15,5,2,14,20,3))
+sum<- group_by(x, Category) %>% 
+  summarise(Frequency = sum(Frequency))
+
+
