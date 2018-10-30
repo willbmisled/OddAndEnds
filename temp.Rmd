@@ -1,27 +1,36 @@
 ---
-title: "nlaTrophicStateData2007"
-output: html_document
+title: "Untitled"
+output: github_document
 ---
-```{r xtable, results="asis"}
-library(caret)
 
-lvs <- c("normal", "abnormal")
-truth <- factor(rep(lvs, times = c(86, 258)),
-                levels = rev(lvs))
-pred <- factor(
-               c(
-                 rep(lvs, times = c(54, 32)),
-                 rep(lvs, times = c(27, 231))),               
-               levels = rev(lvs))
-
-xtab <- table(pred, truth)
-
-confusionMatrix(xtab)
-confusionMatrix(pred, truth)
-confusionMatrix(xtab, prevalence = 0.25)   
-
-
-
-out <- table(Chlorophyll=tsi$ts_c,Secchi=tsi$ts_s)
-confusionMatrix(table(Chlorophyll=tsi$ts_c,Secchi=tsi$ts_s))
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+
+### Putting it all together
+* test
+
+**Field** | **Source** | **Units** | **Description**
+-------------------- | ---------------- | ------------- | ------------------------------------------------------------
+**year** | lmorpho | YYYY | year sample of NLA survey (2007 or 2012)
+**comid** | lmorpho | integer | nhdplus comid from the lmorpho dataset
+**nla_id** | nla design | character | unique identifiers for the NLA lakes
+**visit_no** | nla design | integer | 1 == first visit to lake; 2 == 2nd visit (a subset)
+**sample_date** | nla design | YYYY-MM-DD | date of lake visit
+**lon_dd** | nla design | NAD83 dd | longitude of sample location (not exact)
+**lat_dd** | nla design | NAD83 dd | latitude of sample location (not exact)
+**temperature_mean_2m** | nla profile | degrees C | mean temperature for depth <= 2 m
+**temperature_n** | nla profile | integer | number of observations used for "temperature_mean_2m"
+**tmin_dm30:tmin_dm1** | prism | degrees C | "tmin" = estimated minimum air temperature; "dm?" == sample_date minus (30:1) days 
+**tmin_d0** | prism | degrees C | "tmin" = estimated minimum air temperature for sample_date
+**tmax_dm30:tmax_dm1** | prism | degrees C | "tmax" = estimated maximum air temperature; "dm?" == sample_date minus (30:1) days
+**tmax_d0** | prism | degrees C | "tmin" = estimated maximum air temperature for sample_date
+**tmean_dm30:tmean_dm1** | prism | degrees C | "tmean" = estimated mean air temperature; "dm?" == sample_date minus (30:1) days; calculated as ((tmin_dm? + tmax_dm?) / 2) 
+**tmean_d0** | prism | degrees C | "tmin" = estimated mean air temperature for sample_date; calculated as ((tmin_d0 + tmax_d0) / 2
+    

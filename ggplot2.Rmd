@@ -1,0 +1,11 @@
+---
+title: "ggplot2"
+author: "bryan"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* [change background & gridlines](http://felixfan.github.io/ggplot2-remove-grid-background-margin/)

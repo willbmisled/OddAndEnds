@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ### Source
-[Flat out stolen](https://raw.githubusercontent.com/ropensci/prism/master/README.Rmd).  Look [here](http://ropensci.github.io/prism/) also.
+[Flat out stolen](https://raw.githubusercontent.com/ropensci/prism/master/README.Rmd).  Look [here](http://ropensci.github.io/prism/) also. https://github.com/ropensci/prism
 
 https://rstudio-pubs-static.s3.amazonaws.com/260164_978471fad4f248428a52b8ff72b774be.html
 
@@ -17,9 +17,14 @@ This package allows users to access and visualize data from the [Oregon State PR
 ### Quickstart
 Currently the package is only available on github and installable with `devtools`
 ```{r start, eval=FALSE}
-library(devtools)
-install_github(repo = "prism", username = "ropensci")
+# library(devtools)
+# install_github(repo = "prism", username = "ropensci/prism")
+
 library(prism)
+library(tidyverse)
+library(raster)
+
+options(prism.path = here::here("data_local/prism")) 
 ```
 
 ### Downloading data
@@ -42,8 +47,6 @@ the month - normal data only] |
 Normals are based on the years 1981 - 2010, and can be downloaded in two resolutions, `4km` and `800m`, and a resolution must be specified.  Normals can also be downloaded for a given month, vector of months, or an average for all 30 years.
 
 ```{r get normals}
-library(prism)
-options(prism.path = here("data/prism")) 
 get_prism_normals(type="tmean",resolution = "4km",mon = 1:6, keepZip=F)
 
 ```
@@ -63,12 +66,23 @@ ls_prism_data(absPath = TRUE)[1:10,]
 
 ls_prism_data(name = TRUE)[1:10,]
 
+#bryan: to use these absolute paths you will need to tweak it a bit as below
+
+i <- 1 # which row from ls_prism_data() do you want to convert to raster
+a <- raster(ls_prism_data(absPath=T)[i,2])
+
+freq(a)
+
 ```
 
 You can easily make a quick plot of your data to using the output of `ls_prism_data()`
 
 ```{r quick_plot,fig.height=5,fig.width=7}
 prism_image(ls_prism_data()[1,1])
+
+# bryan: or if you converted to raster above
+plot(a)
+
 
 ```
 
@@ -78,7 +92,12 @@ Monthly and daily data is also easily accessible. Below we'll get January data f
 
 ```{r get daily monthly, message=FALSE}
 get_prism_monthlys(type="tmean", year = 1990:2000, mon = 1, keepZip=F)
+  
+
 get_prism_dailys(type="tmean", minDate = "2013-06-01", maxDate = "2013-06-14", keepZip=F)
+
+
+ls_prism_data()
 ```
 
 Note that for daily data you need to give a well formed date string in the form of "YYYY-MM-DD"
@@ -88,16 +107,42 @@ You can also visualize a single point across a set of rasters.  This procedure w
 Let's get make a plot of January temperatures is Boulder between 1982 and 2014.  First we'll grab all the data from the US, and then give our function a point to get data from.  The point must be a vector in the form of longitude, latitude.
 
 ```{r plot_Boulder,fig.height=5,fig.width=7}
-library(ggplot2)
+
 boulder <- c(-105.2797,40.0176)
 ## Get data.
 get_prism_monthlys(type="tmean", year = 1982:2014, mon = 1, keepZip=F)
 ## We'll use regular expressions to grep through the list and get data only from the month of January
+
+ls_prism_data()
+
 to_slice <- grep("_[0-9]{4}[0][1]",ls_prism_data()[,1],value=T)
+
+  # wow, this took some unpacking.  For the grep statement we are building a pattern
+  # the search string is "_[0-9]{4}[0][1]"
+    # this defines a seven character string
+    # The first is "_"
+    # characters 2 to 5 are defined by [0-9]{4} this is creates all combinations
+      # of the digits [0-9] {4} 
+        # this corresponds to the year
+    # character 6 is fixed as the digit [0]
+        # this is the first digit of the month
+    # character 7 is fixed as the digit [1]
+        # this is the second digit of the month
+    # the end result is a group of 10000 patterns to search for most are not relevant
+    # based on the get_prism_monthlys() call above the relevant patterns are
+        # (198201, 198301, ... 201301, 201401) 
+
 to_slice = grep("tmean",to_slice, value = T)
-p <- prism_slice(boulder,to_slice)
+    # this limits the selected files to the ones with mean temp (tmean)
+    
+p <- prism_slice(boulder,to_slice) 
+    # This function will plot a slice of data at a single point location 
+    # from a list of prism files: uses ggplot
 p + stat_smooth(method="lm",se=F) + theme_bw() + 
 ggtitle("Average January temperature in Boulder, CO 1982-2014")
+
+
+prism_md(to_slice, returnDate = TRUE)
 ```
 
 

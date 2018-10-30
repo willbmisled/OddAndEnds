@@ -1,0 +1,150 @@
+---
+title: "cascoBaySparrowData20181030"
+author: "bryan"
+date: "October 29, 2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(sf)
+library(tidyverse)
+library(RODBC)
+```
+
+## Introduction
+
+* Whitley Gilbert has requested the MRB1 sparrow data for three sites (see below).
+* Sites will be interesected with MRB1 catchments to determine the closest flowline (results checked in arcMap)
+* Flowline COMID will be used to extract the N & P loads from the MRB1 SPARROW model
+* Correspondence from Whitley below: 
+
+```
+From: Whitley Gray [mailto:whitley.gilbert@maine.edu] 
+Sent: Wednesday, October 24, 2018 10:13 AM
+To: Milstead, Bryan <Milstead.Bryan@epa.gov>
+Cc: Liebman, Matt <Liebman.Matt@epa.gov>; Damian Brady <damian.brady@maine.edu>
+Subject: Re: Casco Bay nitrogen loading estimates
+ 
+Hi Bryan,
+ 
+Wanted to follow up on the possibility of rerunning the Casco Bay specific sparrow model using the 
+2017-2018 Nitrogen sampling locations. My previous Presumpscot River TN loading estimate 
+(~400,000 kg/year) was incorrect due to a simple calculation error so I'd like to see how my new 
+estimate (~175,000 kg/year) will compare to the sparrow estimate at my sampling location. I know 
+that there are a couple point source outfalls down stream of my sampling site and the DEP's TN 
+concentrations from sampling at Walton Park/Presumpscot Falls Park, collected on the same days, 
+are higher so I'm eager to see if a sparrow estimate run from my sampling locations will be similar 
+to my loading estimate.
+ 
+Hope all is well and I look forward to hearing from you!
+ 
+Best,
+Whitley
+
+Sent: Thursday, October 25, 2018 10:35 AM
+Sample site coordinates:
+
+Presumpscot River: 43.6869534, -70.3472226
+Royal River: 43.7991590,-70.1782698
+Capisic Brook: 43.670431, -70.30850
+```
+
+
+```{r gis_data, eval = TRUE, include = FALSE, echo = FALSE}
+
+# location of 'CascoBay_MattLiebman/CascoBay.mdb'
+cb <- '//AA.AD.EPA.GOV/ORD/NAR/USERS/EC2/BMilstea/Net MyDocuments/EPA/casco_bay_SPARROW/CascoBay_MattLiebman/CascoBay.mdb'
+
+# get the casco bay catchments
+st_layers(cb)
+
+catch <- st_read(cb, layer = 'CascoBay_Catchments')
+
+# create sf object of site locations
+sites <- data.frame(site = c("Presumpscot River", "Royal River", "Capisic Brook"),
+                    longitude = c(-70.3472226, -70.1782698, -70.30850),
+                    latitude = c(43.6869534, 43.7991590, 43.670431))
+
+# Whitley confirmed that the site coordinates are in WGS84 
+sites <- st_as_sf(sites, coords = c("longitude", "latitude"), crs = 4326)
+
+# convert to casco bay crs
+sites <- st_transform(sites, st_crs(catch))
+
+# intersect
+sites <- st_intersection(sites, catch) 
+st_geometry(sites) <- NULL
+
+sites <- dplyr::select(sites, site, comid = COMID)
+
+# get the sparrow data
+# nload
+con <- odbcConnectAccess(cb)
+nload <- sqlQuery(con, "
+SELECT Predictions_N.reach, Predictions_N.TOT_CFS, Predictions_N.PLOAD_TOTAL, Predictions_N.PLOAD_NSEWER, Predictions_N.PLOAD_CORN_SOY_ALFNF, Predictions_N.PLOAD_TIN_02, Predictions_N.PLOAD_ALFSOYFIX, Predictions_N.PLOAD_MAN_N, Predictions_N.PLOAD_DEVEL, Predictions_N.PLOAD_OTHER_NFERT, Predictions_N.PLOAD_INC_TOTAL, Predictions_N.PLOAD_INC_NSEWER, Predictions_N.PLOAD_INC_CORN_SOY_ALFNF, Predictions_N.PLOAD_INC_TIN_02, Predictions_N.PLOAD_INC_ALFSOYFIX, Predictions_N.PLOAD_INC_MAN_N, Predictions_N.PLOAD_INC_DEVEL, Predictions_N.PLOAD_INC_OTHER_NFERT
+FROM Predictions_N
+WHERE (((Predictions_N.reach)=6722249)) OR (((Predictions_N.reach)=6721495)) OR (((Predictions_N.reach)=6721459));
+")
+close(con)
+
+nload <- dplyr::select(nload, comid = reach, cfs = TOT_CFS, n_total = PLOAD_TOTAL,
+  n_sewer = PLOAD_NSEWER, n_corn_soy_alf_fert = PLOAD_CORN_SOY_ALFNF, n_tin = PLOAD_TIN_02,            
+  n_manure = PLOAD_MAN_N, n_develop = PLOAD_DEVEL, n_other_fert = PLOAD_OTHER_NFERT,
+  n_total_inc = PLOAD_INC_TOTAL, n_sewer_inc = PLOAD_INC_NSEWER , 
+  n_corn_soy_alf_fert_inc = PLOAD_INC_CORN_SOY_ALFNF, n_tin_inc = PLOAD_INC_TIN_02,
+  n_manure_inc = PLOAD_INC_MAN_N, n_develop_inc = PLOAD_INC_DEVEL, n_other_fert_inc = PLOAD_INC_OTHER_NFERT)
+
+
+# just checking
+data.frame(nload[1, 3], sum(nload[1, 4:9]))
+data.frame(nload[2, 10], sum(nload[2, 11:16]))
+
+# sites and nload
+sites <- full_join(sites, nload)
+
+# output data
+write.csv(sites, here::here('output/casco_bay_sparrow_data.csv'), row.names = FALSE)
+```
+
+## Output
+* Data are available here: 
+* This document is available here: 
+* The code is available here:
+* Below are the data tables for total nitrogen and incremental nitrogen for the study sites and the data definitions.
+
+### Total Nitrogen Load for Flowline
+
+```{r show_data1, echo = FALSE}
+knitr::kable(sites[ , c(1:10)])
+```
+
+### Incremental Nitrogen Load for Flowline
+
+```{r show_data2, echo = FALSE}
+knitr::kable(sites[ , c(1:3, 11:17)])
+```
+
+### Data Definitions
+
+name  | units | definition
+------------------------- | -------- |------------------------------------------------------
+site  | No Units | Sample site
+comid	| No Units | The flowline (reach) identification code. 
+cfs   | ft3/s | The mean flow of the reach. [mean_flow] is the name of the variable defined by the control variable mean_flow. NOTE: M3/year=([TOT_CFS]*893593).
+n_total | kg/yr | Predicted total nitrogen flux leaving the reach. Estimates are corrected for retransformation bias caused by the model residuals but are not corrected for bias caused by sampling error in the coefficient estimates.
+n_sewer |	kg/yr |	Predicted flux leaving the reach attributed to nitrogen mass in permitted wastewater discharge. 
+n_corn_soy_alf_fert |	kg/yr |	Predicted flux leaving the reach attributed to nitrogen mass in commercial fertilizer applied to agricultural land in corn / soybeans / alfalfa. 
+n_tin |	kg/yr |	Predicted flux leaving the reach attributed to wet deposition of inorganic nitrogen (ammonia and nitrate).
+n_manure |	kg/yr |	Predicted flux leaving the reach attributed to nitrogen mass in manure from livestock production.
+n_develop |	kg/yr |	Predicted flux leaving the reach attributed to nitrogen mass from developed lands.
+n_other_fert |	kg/yr |	Predicted flux leaving the reach attributed to nitrogen mass in commercial fertilizer applied to agricultural land in other crops.
+n_total_inc | kg/yr | Predicted nitrogen total flux generated within the reach’s incremental watershed. Estimates receive an adjustment for stream attenuation within the reach.
+n_sewer_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to nitrogen mass in permitted wastewater discharge.
+n_corn_soy_alf_fert_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to nitrogen mass in commercial fertilizer applied to agricultural land in corn / soybeans / alfalfa. 
+n_tin_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to wet deposition of inorganic nitrogen (ammonia and nitrate).
+n_manure_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to nitrogen mass in manure from livestock production.
+n_develop_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to nitrogen mass from developed lands.
+n_other_fert_inc |	kg/yr |	Predicted total flux generated within the reach’s incremental watershed and attributed to nitrogen mass in commercial fertilizer applied to agricultural land in other crops.
+
+
