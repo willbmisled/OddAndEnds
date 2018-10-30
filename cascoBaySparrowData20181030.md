@@ -45,9 +45,10 @@ Introduction
 Output
 ------
 
--   Data are available here:
--   This document is available here:
--   The code is available here:
+-   Data are available here: <https://github.com/willbmisled/OddAndEnds/blob/master/output/casco_bay_sparrow_data.csv>
+    -   Note: to download the data follow the link above. From the github page right click on the "RAW" tab and choose "Save target as...". This will allow you to download the csv file to your directory.
+-   This document is available here: <https://github.com/willbmisled/OddAndEnds/blob/master/cascoBaySparrowData20181030.md>
+-   The code is available here: <https://github.com/willbmisled/OddAndEnds/blob/master/cascoBaySparrowData20181030.Rmd>
 -   Below are the data tables for total nitrogen and incremental nitrogen for the study sites and the data definitions.
 
 ### Total Nitrogen Load for Flowline
