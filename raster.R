@@ -3,6 +3,37 @@
 
 library(raster)
 # RasterLayer with the default parameters
+
+i <- 3
+r <- raster(ncol=i, nrow=i)
+ncell(r)
+
+values(r) <- 1:ncell(r)
+
+plot(r)
+ # raster cell numbers start at the top left and end at the bottom right
+
+
+a501 <- raster(ncol = 2, nrow = 3)
+values(a501) <- 1:6
+
+a502 <- raster(ncol = 2, nrow = 3)
+values(a501) <- 2:7
+
+a503 <- raster(ncol = 2, nrow = 3)
+values(a503) <- 3:8
+
+b501 <- raster(ncol = 2, nrow = 3)
+values(a501) <- 11:16
+
+b502 <- raster(ncol = 2, nrow = 3)
+values(a501) <- 12:17
+
+b503 <- raster(ncol = 2, nrow = 3)
+values(a503) <- 13:18
+
+
+
 x <- raster()
 
 x <- raster(ncol=36, nrow=18, xmn=-1000, xmx=1000, ymn=-100, ymx=900)
@@ -18,18 +49,27 @@ x
 r <- raster(ncol=10, nrow=10)
 ncell(r)
 
+values(r) <- 1:ncell(r)
+
+plot(r)
+
+# set.seed(0)
+# values(r) <- runif(ncell(r))
+
+plot(r, main='Raster with 100 cells')
+
 hasValues(r)
 
 values(r) <- 1:ncell(r)
-set.seed(0)
-values(r) <- runif(ncell(r))
+
 
 hasValues(r)
 inMemory(r)
 ## [1] TRUE
 values(r)[1:10]
 
-plot(r, main='Raster with 100 cells')
+
+
 
 
 filename <- system.file("external/test.grd", package="raster")

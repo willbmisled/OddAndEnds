@@ -71,7 +71,17 @@ ls_prism_data(name = TRUE)[1:10,]
 i <- 1 # which row from ls_prism_data() do you want to convert to raster
 a <- raster(ls_prism_data(absPath=T)[i,2])
 
+table(is.na(a[1:27000]))
+
 freq(a)
+
+
+
+x <- values(a)
+x <- ifelse(is.na(x), 0, 1)
+b <- a
+values(b) <- x
+plot(b)
 
 ```
 

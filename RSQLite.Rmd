@@ -1,0 +1,20 @@
+---
+title: "RSQLite"
+author: "bryan"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(RSQLite)
+```
+
+## R Markdown
+
+* means <- dbConnect(RSQLite::SQLite(), here::here("data_local/lake_temperatures.sqlite"))
+* dbListTables(means)
+* dbListFields(means, "tmeans_raw") 
+* dbGetQuery(means, "SELECT * FROM sqlite_master WHERE type = 'index'")
+* dbGetQuery(means, 'SELECT Count(*) FROM nla')
