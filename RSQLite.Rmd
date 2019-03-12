@@ -13,8 +13,77 @@ library(RSQLite)
 
 ## R Markdown
 
-* means <- dbConnect(RSQLite::SQLite(), here::here("data_local/lake_temperatures.sqlite"))
-* dbListTables(means)
-* dbListFields(means, "tmeans_raw") 
+# create or connect to the database
+means <- dbConnect(RSQLite::SQLite(),     
+                    here::here("data_local/lake_temperatures.sqlite"))
+
+# write table                    
+dbWriteTable(means, "means", a, append = TRUE)
+  print(memory.size())
+
+# list tables
+dbListTables(means)
+
+# rename table
+dbExecute(means, 'ALTER TABLE means RENAME TO tmeans_raw')
+
+# list fields in a table
+dbListFields(means, "tmeans_raw")
+
+# index a tablee
+dbExecute(means,"CREATE INDEX index_tmeans_raw_cnum ON tmeans_raw (cellnum)")
+dbExecute(means,"CREATE INDEX index_tmeans_raw_year ON tmeans_raw (year)")
+
+# submit queries
 * dbGetQuery(means, "SELECT * FROM sqlite_master WHERE type = 'index'")
 * dbGetQuery(means, 'SELECT Count(*) FROM nla')
+* mean1 <- dbGetQuery(means, paste0('SELECT * FROM tmeans WHERE cellnum = ',
+            cn, ' AND date = ', date1))
+* mean2 <- dbGetQuery(means, paste0('SELECT * FROM tmeans_raw WHERE cellnum = 
+            ', cn, ' AND year = ', yr1))
+aves <- dbGetQuery(means, paste0('SELECT * FROM tmeans WHERE date IN 
+          (20010601, 20010707, 20010930) AND
+          cellnum IN (', paste(temp$cellnum, collapse=", "), ')')) 
+
+                    
+# close and save the database
+  dbDisconnect(means)
+  
+  
+  
+  ```{r rsqlite, include=FALSE, echo=FALSE, cache=FALSE, eval = FALSE} 
+# create or connect to the database
+cc <- dbConnect(RSQLite::SQLite(),     
+                    here::here("calendarOfCaptures/cc.sqlite"))
+
+# create table captures                  
+dbWriteTable(cc, "captures", caps, append = FALSE)
+
+# create table dates                  
+dbWriteTable(cc, "dates", dates, append = FALSE)
+
+# list tables
+dbListTables(cc)
+
+# list fields in a table
+dbListFields(cc, "captures")
+dbListFields(cc, "dates")
+
+# add indices
+dbExecute(cc,"CREATE INDEX idx_captures_id ON captures (id)")
+dbExecute(cc,"CREATE INDEX idx_captures_gr ON captures (gr)")
+dbExecute(cc,"CREATE INDEX idx_captures_sp ON captures (sp)")
+dbExecute(cc,"CREATE INDEX idx_captures_fjdate ON captures (fjdate)")
+
+# close and save the database
+  dbDisconnect(means)
+```
+
+ 
+
+
+
+
+
+
+
